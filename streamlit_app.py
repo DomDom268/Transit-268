@@ -28,12 +28,17 @@ st.write(f"You selected route {selected_route_id} and {selected_stop_name}.Calcu
 eta_call = requests.get(f"http://localhost:5000/eta?route_id={selected_route_id}&stop_id={stop['stop_id']}") #Make a GET request to the backend API to calculate the ETA for the selected route and stop. The request includes the selected route ID and stop ID as query parameters. The response from the API is expected to contain the ETA information, which will be displayed to the user. The status code of the response is checked to ensure that the request was successful before processing the ETA data.s
 if eta_call.status_code == 200:
     eta = eta_call.json()
-    if 'eta_minutes' not in eta.keys():
-        st.write(f"Sorry, we couldn't calculate the ETA for route {selected_route_id} at {selected_stop_name} at this time.")
-    elif eta['eta_minutes'] >= 1:
-        st.write(f"Bus {eta['vehicle_id']}  on route {selected_route_id} is expected to arrive at {selected_stop_name} in {eta['eta_minutes']} minutes.")
-        # st.write(f"{eta}")
-    elif eta['eta_minutes'] < 1:
-        st.write(f"Bus {eta['vehicle_id']} on route {selected_route_id}  is expected to arrive at {selected_stop_name} now.")
+    for eta_info in eta['eta_minutes']:
+        if eta_info >= 1:
+            st.write(f"Bus {eta['vehicle_id']} {eta_info} minutes.")
+        elif eta_info < 1:
+            st.write(f"Bus {eta['vehicle_id']} now.")
+    # if 'eta_minutes' not in eta.keys():
+    #     st.write(f"Sorry, we couldn't calculate the ETA for route {selected_route_id} at {selected_stop_name} at this time.")
+    # elif eta['eta_minutes'] >= 1:
+    #     st.write(f"Bus {eta['vehicle_id']}  on route {selected_route_id} is expected to arrive at {selected_stop_name} in {eta['eta_minutes']} minutes.")
+    #     # st.write(f"{eta}")
+    # elif eta['eta_minutes'] < 1:
+    #     st.write(f"Bus {eta['vehicle_id']} on route {selected_route_id}  is expected to arrive at {selected_stop_name} now.")
         
     

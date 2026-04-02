@@ -301,8 +301,9 @@ def eta():
     target_seq = target_stop['seq']
 
     #Get all vehicles on route
-    vehicles = Vehicle.query.filter_by(route_id=route_id).all()
-    min_eta = float('inf')
+    vehicles = Vehicle.query.filter_by(route_id=route_id).order_by(Vehicle.last_updated.desc()).all()
+    eta_list = []
+    # min_eta = float('inf')
     best_vehicle = None
     best_vehicle_location = None
     best_distance = None
@@ -337,26 +338,27 @@ def eta():
         #Calculate ETA
         speed = v.speed if v.speed > 5 else 25
         eta = (distance / speed) * 60 #Convert to minutes
+        eta_list.append(eta)
 
         #Find min ETA
-        if eta < min_eta:
-            min_eta = eta
-            best_vehicle = v.vehicle_id
-            best_vehicle_location = (v.latitude, v.longitude)
-            best_distance = distance
+        # if eta < min_eta:
+        #     min_eta = eta
+        #     best_vehicle = v.vehicle_id
+        #     best_vehicle_location = (v.latitude, v.longitude)
+        #     best_distance = distance
         
-    if min_eta == float('inf'):
-        logging.warning(f"No vehicles found heading towards stop_id {stop_id} on route_id {route_id} in request to /eta")
-        return jsonify({'message':'No buses found'})
-    elif min_eta > 120:
-        logging.info(f"ETA of {min_eta} minutes for vehicle {best_vehicle} in request to /eta is unusually high, likely due to data issues")
-        return jsonify({'message':'No active buses found on this route'})
+    # if min_eta == float('inf'):
+    #     logging.warning(f"No vehicles found heading towards stop_id {stop_id} on route_id {route_id} in request to /eta")
+    #     return jsonify({'message':'No buses found'})
+    # elif min_eta > 120:
+    #     logging.info(f"ETA of {min_eta} minutes for vehicle {best_vehicle} in request to /eta is unusually high, likely due to data issues")
+    #     return jsonify({'message':'No active buses found on this route'})
 
     return jsonify({
         'loc': best_vehicle_location,
         'distance': distance,
         'vehicle_id': best_vehicle,
-        'eta_minutes' : round(min_eta,0),
+        'eta_minutes' : eta_list,
         'user_loc': target_stop['id'],
         'next_stop': closest_stop['id']
     })
