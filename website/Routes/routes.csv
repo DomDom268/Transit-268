@@ -1,0 +1,5 @@
+route_id,route_name,direction
+17,Harbour to Town,N
+18,Town to Harbour,S
+13,Town to John Hughes,S
+14,John Hughes to Town,N
