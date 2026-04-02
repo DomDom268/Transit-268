@@ -303,6 +303,7 @@ def eta():
     #Get all vehicles on route
     vehicles = Vehicle.query.filter_by(route_id=route_id).order_by(Vehicle.last_updated.desc()).all()
     eta_list = []
+    vehicle_list = []
     # min_eta = float('inf')
     best_vehicle = None
     best_vehicle_location = None
@@ -338,6 +339,7 @@ def eta():
         #Calculate ETA
         speed = v.speed if v.speed > 5 else 25
         eta = (distance / speed) * 60 #Convert to minutes
+        vehicle_list.append(v.vehicle_id)
         eta_list.append(eta)
 
         #Find min ETA
@@ -357,7 +359,7 @@ def eta():
     return jsonify({
         'loc': best_vehicle_location,
         'distance': distance,
-        'vehicle_id': best_vehicle,
+        'vehicle_id': vehicle_list,
         'eta_minutes' : eta_list,
         'user_loc': target_stop['id'],
         'next_stop': closest_stop['id']
