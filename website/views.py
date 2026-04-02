@@ -348,6 +348,9 @@ def eta():
     if min_eta == float('inf'):
         logging.warning(f"No vehicles found heading towards stop_id {stop_id} on route_id {route_id} in request to /eta")
         return jsonify({'message':'No buses found'})
+    elif min_eta > 120:
+        logging.info(f"ETA of {min_eta} minutes for vehicle {best_vehicle} in request to /eta is unusually high, likely due to data issues")
+        return jsonify({'message':'No active buses found on this route'})
 
     return jsonify({
         'loc': best_vehicle_location,
