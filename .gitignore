@@ -1,0 +1,12 @@
+.env
+__pycache__/
+*.pyc
+instance/
+*.db
+app.log
+CreatePostgresTables.sql
+DB_Mess.sql
+DeletingVehicles.sql
+__pycache__
+.vscode/
+instance/
