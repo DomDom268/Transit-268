@@ -29,7 +29,7 @@ eta_call = requests.get(f"http://localhost:5000/eta?route_id={selected_route_id}
 if eta_call.status_code == 200:
     eta = eta_call.json()
     for i in range(len(eta['eta_minutes'])):
-        eta_info = eta['eta_minutes'][i]
+        eta_info = round(eta['eta_minutes'][i],0)
         vehicle_id = eta['vehicle_id'][i]
         if eta_info >= 1:
             st.write(f"Bus {vehicle_id} {eta_info} minutes.")
