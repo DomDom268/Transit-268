@@ -1,7 +1,9 @@
 import streamlit as st
 import requests
 import os
+import pandas as pd
 from datetime import datetime
+
 
 st.set_page_config(page_title="Transit 268",layout="wide") #Center the page title and set the layout to wide for better use of screen space
 
@@ -47,8 +49,7 @@ if eta_call.status_code == 200:
             st.write(f"Bus {vehicle_id} {eta_info} minutes.")
         elif eta_info < 1:
             st.write(f"Bus {vehicle_id} now.")
-else:
-    st.warning("No active buses on this route.")
+
     # if 'eta_minutes' not in eta.keys():
     #     st.write(f"Sorry, we couldn't calculate the ETA for route {selected_route_id} at {selected_stop_name} at this time.")
     # elif eta['eta_minutes'] >= 1:
@@ -56,5 +57,24 @@ else:
     #     # st.write(f"{eta}")
     # elif eta['eta_minutes'] < 1:
     #     st.write(f"Bus {eta['vehicle_id']} on route {selected_route_id}  is expected to arrive at {selected_stop_name} now.")
-        
-    
+
+    #Collect locations for stops and next buses
+    stop_loc = requests.get(f"http://localhost:5000/stop/location?stop_id={stop['stop_id']}&route_id={selected_route_id}").json() #Make a GET request to the backend API to fetch the location of the vehicle corresponding to the next bus arrival. The request includes the vehicle ID as a query parameter, which is extracted from the ETA data received from the previous API call. The response from the API is expected to contain the location information for the specified vehicle, which can be used to display the current location of the next bus on a map or provide additional information to the user.
+    vehicle_locs = []
+    for id in eta['vehicle_id']:
+        loc = requests.get(f"http://localhost:5000/location/vehicle?vehicle_id={id}").json()
+        vehicle_locs.append(loc)
+
+
+    data = {
+        "name":[stop['stop_id']] + eta['vehicle_id'],
+        "lat":[stop_loc['lat']] + [loc['lat'] for loc in vehicle_locs],
+        "lon":[stop_loc['lon']] + [loc['lon'] for loc in vehicle_locs]
+    }
+
+    map_data = pd.DataFrame(data)
+
+    st.map(map_data, zoom=12) #Display a map centered around the location of the next bus arrival, using the latitude and longitude information fetched from the backend API. The map is created using the st.map() function, which takes a DataFrame containing the latitude and longitude data for the stop and the next bus arrivals. The zoom level is set to 12 to provide a clear view of the area around the stop and the next bus locations.
+    # st.write(data)
+else:
+    st.warning("No active buses on this route.")
