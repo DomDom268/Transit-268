@@ -101,6 +101,7 @@ if eta_call.status_code == 200:
 
         deck = pdk.Deck(
             layers=[layer],
+            map_style='road',
             initial_view_state=view_state,
         )
 
