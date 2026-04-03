@@ -38,6 +38,9 @@ eta_call = requests.get(f"http://localhost:5000/eta?route_id={selected_route_id}
 if eta_call.status_code == 200:
     eta = eta_call.json()
 
+    if len(eta['eta_minutes']) == 0:
+        st.warning(f"Sorry, we couldn't calculate the ETA for route {selected_route_id} at {selected_stop_name} at this time.")
+        
     next_bus = eta['eta_minutes'][0]
 
     st.metric("Next Bus Arrival", value=f"{round(next_bus,0)} minutes" if next_bus >= 1 else "Now") #Display the ETA for the next bus arrival using a metric component. The label is set to "Next Bus Arrival" and the value is formatted to show the ETA in minutes if it is greater than or equal to 1 minute, or "Now" if the ETA is less than 1 minute.
