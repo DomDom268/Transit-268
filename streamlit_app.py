@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 import os
 import pandas as pd
+import pydeck as pdk
 from datetime import datetime
 
 
@@ -81,6 +82,28 @@ if eta_call.status_code == 200:
         st.write(map_data)
 
         st.map(map_data, zoom=12) 
-        # st.write(data)
+
+
+        layer =pdk.Layer(
+            'ScatterplotLayer',
+            data=map_data,
+            get_position='[lon, lat]',
+            get_color='[200, 30, 0, 160]',
+            get_radius=100,
+        )
+
+        view_state = pdk.ViewState(
+            longitude=map_data['lon'].mean(),
+            latitude=map_data['lat'].mean(),
+            zoom=12,
+            pitch=0,
+        )
+
+        deck = pdk.Deck(
+            layers=[layer],
+            initial_view_state=view_state,
+        )
+
+        st.pydeck_chart(deck)
 else:
     st.warning("No active buses on this route.")
