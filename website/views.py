@@ -383,12 +383,12 @@ def eta():
     #     return jsonify({'message':'No active buses found on this route'})
 
     return jsonify({
-        'loc': best_vehicle_location,
-        'distance': distance,
+        # 'loc': best_vehicle_location,
+        # 'distance': distance,
         'vehicle_id': vehicle_list,
         'eta_minutes' : eta_list,
-        'user_loc': target_stop['id'],
-        'next_stop': closest_stop['id']
+        # 'user_loc': target_stop['id'],
+        # 'next_stop': closest_stop['id']
     })
 
 @views.route('/health', methods = ['GET']) #Health check endpoint
