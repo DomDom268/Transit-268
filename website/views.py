@@ -106,22 +106,28 @@ def update_location():
         logging.error(f"Unexpected error occurred: {str(e)}")   
         return jsonify({'unexpected error': str(e)}), 500
 
-@views.route('/location/latest/<vehicle_id>', methods = ['GET']) #API Endpoint to send latest location to frontend
-def get_latest(vehicle_id):
+@views.route('/location/vehicle', methods = ['GET']) #API Endpoint to send latest location to frontend
+def get_vehicle_location():
+    logging.info("Received request to /location/vehicle with args: " + str(request.args))
+
+    vehicle_id = request.args.get('vehicle_id')
+    if not vehicle_id:
+        logging.error("vehicle_id is required in request to /location/vehicle")
+        return jsonify({'error':'vehicle_id is required'}), 400
 
     location = Vehicle.query\
     .filter_by(vehicle_id = vehicle_id)\
-    .order_by(Vehicle.timestamp.desc())\
-    .first()
+    .all()
 
     if not location:
+        logging.warning(f"No location found for vehicle_id {vehicle_id} in request to /location/vehicle")
         return jsonify({'error':'no location'}), 404
 
     return jsonify({
         'vehicle_id': vehicle_id,
         'lat' : location.lat,
         'lon' : location.lon,
-        'timestamp' : location.timestamp
+        'timestamp' : location.last_updated
          })
 
 @views.route('/location/all', methods = ['GET']) # API Endpoint to send latest location of all vehicles to frontend
