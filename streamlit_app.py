@@ -125,5 +125,7 @@ if eta_call.status_code == 200:
         )
 
         st.pydeck_chart(deck)
+
+        st.write(map_data)
 else:
     st.warning("No active buses on this route.")
