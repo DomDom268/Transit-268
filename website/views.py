@@ -259,7 +259,7 @@ def stop_location():
     stop_id = request.args.get('stop_id', type=int)
     route_id = request.args.get('route_id', type=int)
 
-    if stop_id or route_id is None:
+    if stop_id is None or route_id is None:
         logging.warning("stop_id and route_id are required in request to /stop/location")
         return jsonify({'error':'stop_id and route_id are required'}), 400
     
