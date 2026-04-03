@@ -33,8 +33,11 @@ st.markdown(f"### Calculating Next Arrivals...⌚") #Display a message indicatin
 eta_call = requests.get(f"http://localhost:5000/eta?route_id={selected_route_id}&stop_id={stop['stop_id']}") #Make a GET request to the backend API to calculate the ETA for the selected route and stop. The request includes the selected route ID and stop ID as query parameters. The response from the API is expected to contain the ETA information, which will be displayed to the user. The status code of the response is checked to ensure that the request was successful before processing the ETA data.s
 if eta_call.status_code == 200:
     eta = eta_call.json()
+
     next_bus = eta['eta_minutes'][0]
-    st.metric(label="Next Bus Arrival", value=f"{round(next_bus,0)} minutes" if next_bus >= 1 else "Now") #Display the ETA for the next bus arrival using a metric component. The label is set to "Next Bus Arrival" and the value is formatted to show the ETA in minutes if it is greater than or equal to 1 minute, or "Now" if the ETA is less than 1 minute.
+
+    st.metric("Next Bus Arrival", value=f"{round(next_bus,0)} minutes" if next_bus >= 1 else "Now") #Display the ETA for the next bus arrival using a metric component. The label is set to "Next Bus Arrival" and the value is formatted to show the ETA in minutes if it is greater than or equal to 1 minute, or "Now" if the ETA is less than 1 minute.
+    
     for i in range(1,(len(eta['eta_minutes']))):
         eta_info = round(eta['eta_minutes'][i],0)
         vehicle_id = eta['vehicle_id'][i]
