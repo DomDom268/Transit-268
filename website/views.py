@@ -115,9 +115,7 @@ def get_vehicle_location():
         logging.error("vehicle_id is required in request to /location/vehicle")
         return jsonify({'error':'vehicle_id is required'}), 400
 
-    location = Vehicle.query\
-    .filter_by(vehicle_id = vehicle_id)\
-    .all()
+    location = Vehicle.query.filter_by(vehicle_id = vehicle_id).first()
 
     if not location:
         logging.warning(f"No location found for vehicle_id {vehicle_id} in request to /location/vehicle")
@@ -125,8 +123,8 @@ def get_vehicle_location():
 
     return jsonify({
         'vehicle_id': vehicle_id,
-        'lat' : location.lat,
-        'lon' : location.lon,
+        'lat' : location.latitude,
+        'lon' : location.longitude,
         'timestamp' : location.last_updated
          })
 
