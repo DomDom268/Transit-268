@@ -79,9 +79,9 @@ if eta_call.status_code == 200:
         }
 
         map_data = pd.DataFrame(data)
-        st.write(map_data)
+        # st.write(map_data)
 
-        st.map(map_data, zoom=12) 
+        # st.map(map_data, zoom=12) 
 
 
         layer =pdk.Layer(
