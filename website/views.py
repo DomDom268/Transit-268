@@ -252,7 +252,29 @@ def get_stops():
                 "longitude": s.stop.longitude
             } for s in stops]
         )
+
+@views.route('/stop/location', methods = ['GET']) #API Endpoint to send location of a stop
+def stop_location():
+    logging.info("Received request to /stop/location with args: " + str(request.args))
+    stop_id = request.args.get('stop_id', type=int)
+    route_id = request.args.get('route_id', type=int)
+
+    if stop_id or route_id is None:
+        logging.warning("stop_id and route_id are required in request to /stop/location")
+        return jsonify({'error':'stop_id and route_id are required'}), 400
     
+    stop = Stops.query.filter_by(route_id = route_id, stop_id = stop_id).first()
+    if not stop:
+        logging.warning("Stop not found in request to /stop/location")
+        return jsonify({'error':'stop not found'}), 404
+
+    return jsonify({
+        'stop_id': stop_id,
+        'route_id': route_id,
+        'lat' : stop.latitude,
+        'lon' : stop.longitude
+    })
+
 @views.route('/eta', methods = ['GET']) #API ENdpoint to calculate and send the eta of a vehicle
 @limiter.limit("5 per minute") # Limit to 5 requests per minute
 def eta():
