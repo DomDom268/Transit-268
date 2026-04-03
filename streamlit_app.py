@@ -73,8 +73,8 @@ if eta_call.status_code == 200:
 
         data = {
             "name":[stop['stop_id']] + eta['vehicle_id'],
-            "lat":[stop_loc['lat']] + [loc['lat'] for loc in vehicle_locs],
-            "lon":[stop_loc['lon']] + [loc['lon'] for loc in vehicle_locs]
+            "lon":[stop_loc['lon']] + [loc['lon'] for loc in vehicle_locs],
+            "lat":[stop_loc['lat']] + [loc['lat'] for loc in vehicle_locs]
         }
 
         map_data = pd.DataFrame(data)
