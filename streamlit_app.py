@@ -14,7 +14,8 @@ routes = requests.get('http://localhost:5000/routes').json() #Fetch routes from 
 route_options = {f"{r['route_name']} ({r['direction']})": r['route_id'] for r in routes} #Create a dictionary mapping route names to route IDs for the dropdown menu
 
 with col1:
-    selected_route_name = st.selectbox("Select Route", list(route_options.keys())) #Create a dropdown menu in the sidebar for selecting a route, using the route names as options
+    st.subheader("Select Route") #Display a subheader in the first column to indicate that the user should select a route and stop from the dropdown menus below
+    selected_route_name = st.selectbox(placeholder="Select Route", options=list(route_options.keys())) #Create a dropdown menu in the sidebar for selecting a route, using the route names as options
 
 selected_route_id = route_options[selected_route_name] #Get the route ID corresponding to the selected route name from the route_options dictionary, which will be used to fetch the stops for that route
 
@@ -24,7 +25,8 @@ stop_options = {s['stop_name']:s["stop_id"] for s in stops}
 # stop_names = [stop['stop_name'] for stop in stops]
 
 with col2:
-    selected_stop_name = st.selectbox('Select a stop', list(stop_options.keys())) #Create a dropdown menu in the sidebar for selecting a stop, using the stop names as options. The stop names are extracted from the stops data fetched from the backend API and stored in the stop_options dictionary, which maps stop names to stop IDs for later use when calculating ETA.
+    st.subheader("Select a Stop") #Display a subheader in the second column to indicate that the next arrivals for the selected route and stop will be displayed below
+    selected_stop_name = st.selectbox(placeholder="Select a stop", options=list(stop_options.keys())) #Create a dropdown menu in the sidebar for selecting a stop, using the stop names as options. The stop names are extracted from the stops data fetched from the backend API and stored in the stop_options dictionary, which maps stop names to stop IDs for later use when calculating ETA.
 selected_stop_id = stop_options[selected_stop_name] # Get the stop ID corresponding to the selected stop name from the stop_options dictionary, which will be used to calculate the ETA for the selected route and stop.
 
 stop = next(stop for stop in stops if stop['stop_name'] == selected_stop_name) #Find the stop object in the stops list that matches the selected stop name. This is done using a generator expression that iterates through the stops and returns the first stop whose 'stop_name' matches the selected stop name. The resulting stop object contains information about the selected stop, including its stop ID, which will be used to calculate the ETA for the selected route and stop.
