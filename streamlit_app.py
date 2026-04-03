@@ -79,9 +79,19 @@ if eta_call.status_code == 200:
         }
 
         map_data = pd.DataFrame(data)
-        # st.write(map_data)
+        
 
-        # st.map(map_data, zoom=12) 
+        #Creating Pydeck Map
+        icon_data = {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/a/aa/Bus_icon_d_green.jpg",
+            "width": 128,
+            "height": 128,
+            "anchorY": 128
+        }
+
+        map_data['icon_data'] = None
+        for i in map_data.index[1::]:
+            map_data['icon_data'][i] = icon_data
 
 
         layer =pdk.Layer(
@@ -92,6 +102,14 @@ if eta_call.status_code == 200:
             get_radius=100,
         )
 
+        iconLayer = pdk.Layer(
+            type='IconLayer',
+            data=map_data[1::],
+            get_icon='icon_data',
+            get_size=4,
+            size_scale=15
+        )
+
         view_state = pdk.ViewState(
             longitude=map_data['lon'].mean(),
             latitude=map_data['lat'].mean(),
@@ -100,7 +118,7 @@ if eta_call.status_code == 200:
         )
 
         deck = pdk.Deck(
-            layers=[layer],
+            layers=[layer, iconLayer],
             map_style='mapbox://styles/mapbox/streets-v11',
             initial_view_state=view_state,
         )
