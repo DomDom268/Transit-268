@@ -38,7 +38,7 @@ eta_call = requests.get(f"http://localhost:5000/eta?route_id={selected_route_id}
 if eta_call.status_code == 200:
     eta = eta_call.json()
 
-    if len(eta['eta_minutes']) == 0:
+    if not eta['eta_minutes']:
         st.warning(f"Sorry, we couldn't calculate the ETA for route {selected_route_id} at {selected_stop_name} at this time.")
         
     next_bus = eta['eta_minutes'][0]
