@@ -104,7 +104,7 @@ if eta_call.status_code == 200:
 
         iconLayer = pdk.Layer(
             type='IconLayer',
-            data=map_data[1::],
+            data=map_data,
             get_icon='icon_data',
             get_size=4,
             size_scale=15
