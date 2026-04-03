@@ -78,8 +78,9 @@ if eta_call.status_code == 200:
         }
 
         map_data = pd.DataFrame(data)
+        st.write(map_data)
 
-        st.map(map_data, zoom=12) #Display a map centered around the location of the next bus arrival, using the latitude and longitude information fetched from the backend API. The map is created using the st.map() function, which takes a DataFrame containing the latitude and longitude data for the stop and the next bus arrivals. The zoom level is set to 12 to provide a clear view of the area around the stop and the next bus locations.
+        # st.map(map_data, zoom=12) #Display a map centered around the location of the next bus arrival, using the latitude and longitude information fetched from the backend API. The map is created using the st.map() function, which takes a DataFrame containing the latitude and longitude data for the stop and the next bus arrivals. The zoom level is set to 12 to provide a clear view of the area around the stop and the next bus locations.
         # st.write(data)
 else:
     st.warning("No active buses on this route.")
