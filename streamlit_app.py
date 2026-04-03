@@ -46,7 +46,7 @@ if eta_call.status_code == 200:
         eta_info = round(eta['eta_minutes'][i],0)
         vehicle_id = eta['vehicle_id'][i]
         if eta_info >= 1:
-            st.write(f"Bus {vehicle_id} {eta_info} minutes.")
+            st.write(f"{eta_info} minutes.")
         elif eta_info < 1:
             st.write(f"Bus {vehicle_id} now.")
 
