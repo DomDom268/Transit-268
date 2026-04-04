@@ -2,6 +2,9 @@ import requests
 import time
 import ast
 import os
+from dotenv import load_dotenv
+
+load_dotenv() #Load environment variables from .env file
 
 URL = "http://127.0.0.1:5000/location" #Backend url
 
