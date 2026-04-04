@@ -131,7 +131,8 @@ if eta_call.status_code == 200:
         )
 
         st.pydeck_chart(deck)
+        st.caption("Last updated at: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
-        st.write(map_data)
+        # st.write(map_data)
 else:
     st.warning("No active buses on this route.")
