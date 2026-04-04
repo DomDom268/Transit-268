@@ -100,13 +100,13 @@ if eta_call.status_code == 200:
             map_data['icon_data'][i] = icon_data
 
 
-        layer =pdk.Layer(
-            'ScatterplotLayer',
-            data=map_data,
-            get_position='[lon, lat]',
-            get_color='[200, 30, 0, 160]',
-            get_radius=100,
-        )
+        # # layer =pdk.Layer(
+        # #     'ScatterplotLayer',
+        # #     data=map_data,
+        # #     get_position='[lon, lat]',
+        # #     get_color='[200, 30, 0, 160]',
+        # #     get_radius=100,
+        # )
 
         iconLayer = pdk.Layer(
             type='IconLayer',
@@ -125,7 +125,7 @@ if eta_call.status_code == 200:
         )
 
         deck = pdk.Deck(
-            layers=[layer, iconLayer],
+            layers=[iconLayer],
             map_style='mapbox://styles/mapbox/streets-v11',
             initial_view_state=view_state,
         )
