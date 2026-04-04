@@ -1,11 +1,11 @@
 import requests
 import time
 import ast
-
+import os
 
 URL = "http://127.0.0.1:5000/location" #Backend url
 
-your_api_key = '4394ca993326dfc916b0205de181a031' #API key for authentication, generated when vehicle is added to database. Can be found in the vehicles table in the database
+your_api_key = os.getenv('VEHICLE_8_KEY') #API key for authentication, generated when vehicle is added to database. Can be found in the vehicles table in the database
 with open('coords14.txt', 'r') as f:
     list_of_coords = f.read()
 
