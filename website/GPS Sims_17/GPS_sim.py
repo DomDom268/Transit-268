@@ -1,11 +1,13 @@
 import requests
 import time
 import ast
+import os
+from dotenv import load_dotenv
 
-
+load_dotenv() #Load environment variables from .env file
 URL = "http://127.0.0.1:5000/location" #Backend url
 
-your_api_key = '0d4a8d8e309d268927e0861cab8e2c5d' #API key for authentication, generated when vehicle is added to database. Can be found in the vehicles table in the database
+your_api_key = os.getenv('VEHICLE_1_KEY') #API key for authentication, generated when vehicle is added to database. Can be found in the vehicles table in the database
 with open('website/GPS Sims_17/coords2.txt', 'r') as f:
     list_of_coords = f.read()
 

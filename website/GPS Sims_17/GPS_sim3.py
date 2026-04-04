@@ -1,11 +1,17 @@
 import requests
 import time
+import ast
+import os
+from dotenv import load_dotenv
 
+load_dotenv() #Load environment variables from .env file    
 URL = 'http://127.0.0.1:5000/location'
+
+your_api_key = os.getenv('VEHICLE_3_KEY') #API key for authentication, generated when vehicle is added to database. Can be found in the vehicles table in the database
 with open('coords2.txt', 'r') as f:
     list_of_coords = f.read()
 
-route17 = eval(list_of_coords)
+route17 = ast.literal_eval(list_of_coords)
 route18 = route17[::-1]
 
 i = 0 
@@ -24,7 +30,7 @@ while True:
         "last_updated":time.time()
         }
     
-    requests.post(URL,json=payload)
+    requests.post(URL,json=payload,headers={'X-API-KEY': your_api_key}) #Send request to html to add payload to db
 
     if i == len(route18) - 1:
         direction = -1
