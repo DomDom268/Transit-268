@@ -90,6 +90,12 @@ if eta_call.status_code == 200:
         }
 
         map_data['icon_data'] = None
+        map_data['icon_data'][0] = {
+            "url":"https://upload.wikimedia.org/wikipedia/commons/7/74/Location_icon_from_Noun_Project.png",
+            "width": 128,
+            "height": 128,
+            "anchorY": 128
+        }
         for i in map_data.index[1::]:
             map_data['icon_data'][i] = icon_data
 
