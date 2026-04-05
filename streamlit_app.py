@@ -36,8 +36,8 @@ def get_vehicle_location(route_id,vehicle_ids:list):
     vehicles = requests.get(f"http://localhost:5000/vehicles?route_id={route_id}").json()
 
     for v in vehicles:
-        if v is vehicle_ids:
-            loc.append(v)
+        if v in vehicle_ids:
+            locs.append(v)
     
     return locs
 
