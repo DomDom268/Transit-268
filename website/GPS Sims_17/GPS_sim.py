@@ -21,7 +21,8 @@ while True:
     
     lat,lon = route[i]
     route_id = 17 if direction == 1 else 18
-    print(f"Sending {route_id}")
+    if route_id == 18:
+        print(f"Sending {route_id}")
     payload = {
         'vehicle_id' : 1,
         'vehicle_plate' : 'TEST123',
