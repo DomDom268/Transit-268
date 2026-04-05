@@ -346,7 +346,9 @@ def eta():
     for v in vehicles:
         closest_stop = min(stops_list, key=lambda s: haversine(v.latitude, v.longitude, s['lat'], s['lon']))
 
-        if closest_stop['seq'] >  target_seq:
+        direction = 1 if route_id == 17 or route_id == 14 else -1
+
+        if (closest_stop['seq'] -  target_seq) * direction > 0:
             logging.info(f"Vehicle {v.vehicle_id} is past the target stop in request to /eta, skipping")
             continue
         
@@ -360,7 +362,7 @@ def eta():
             s2 = stops_list[i+1]
 
             # if s1['seq'] >= closest_stop['seq'] and s2['seq'] <= target_seq:
-            if closest_stop['seq'] <= s1['seq'] < target_seq:
+            if (s1['seq'] - closest_stop['seq']) * direction >= 0 and (target_seq - s1['seq']) * direction >= 0:
                 logging.info(f"Calculating distance from stop {s1['id']} to stop {s2['id']} for vehicle {v.vehicle_id} in request to /eta")
                 distance += haversine(s1['lat'],s1['lon'],s2['lat'],s2['lon'])
 
@@ -370,27 +372,9 @@ def eta():
         vehicle_list.append(v.vehicle_id)
         eta_list.append(eta)
 
-        #Find min ETA
-        # if eta < min_eta:
-        #     min_eta = eta
-        #     best_vehicle = v.vehicle_id
-        #     best_vehicle_location = (v.latitude, v.longitude)
-        #     best_distance = distance
-        
-    # if min_eta == float('inf'):
-    #     logging.warning(f"No vehicles found heading towards stop_id {stop_id} on route_id {route_id} in request to /eta")
-    #     return jsonify({'message':'No buses found'})
-    # elif min_eta > 120:
-    #     logging.info(f"ETA of {min_eta} minutes for vehicle {best_vehicle} in request to /eta is unusually high, likely due to data issues")
-    #     return jsonify({'message':'No active buses found on this route'})
-
     return jsonify({
-        # 'loc': best_vehicle_location,
-        # 'distance': distance,
         'vehicle_id': vehicle_list,
         'eta_minutes' : sorted(eta_list),
-        # 'user_loc': target_stop['id'],
-        # 'next_stop': closest_stop['id']
     })
 
 @views.route('/health', methods = ['GET']) #Health check endpoint
