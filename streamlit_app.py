@@ -164,6 +164,8 @@ with live_section.container():
             st.pydeck_chart(deck)
             st.caption("Last updated at: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
+            st.write(map_data)
+
         else:
             logging.warning(f"Failed to fetch ETA data: {eta_call.status_code}")
             st.error("Sorry, we couldn't fetch the ETA data at this time. Please try again later.")
