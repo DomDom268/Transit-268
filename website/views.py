@@ -386,7 +386,7 @@ def eta():
         # 'loc': best_vehicle_location,
         # 'distance': distance,
         'vehicle_id': vehicle_list,
-        'eta_minutes' : eta_list,
+        'eta_minutes' : sorted(eta_list),
         # 'user_loc': target_stop['id'],
         # 'next_stop': closest_stop['id']
     })
