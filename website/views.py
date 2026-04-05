@@ -278,7 +278,7 @@ def stop_location():
     })
 
 @views.route('/eta', methods = ['GET']) #API ENdpoint to calculate and send the eta of a vehicle
-@limiter.limit("5 per minute") # Limit to 5 requests per minute
+@limiter.limit("30 per minute") # Limit to 30 requests per minute
 def eta():
     logging.info("Received request to /eta with args: " + str(request.args))
    #Receive route number and stop id from user
