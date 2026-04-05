@@ -1,3 +1,5 @@
+import logging
+
 import requests
 import time
 import ast
@@ -18,7 +20,7 @@ direction = 1 #1 = Forward, -1=Reverse
 while True:
     
     lat,lon = route[i]
-
+    logging.info(f"Sending {route_id} to backend with lat: {lat} and lon: {lon}")
     route_id = 17 if direction == 1 else 18
     payload = {
         'vehicle_id' : 1,
