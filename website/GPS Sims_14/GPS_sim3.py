@@ -26,7 +26,7 @@ while True:
         'vehicle_plate' : 'TEST129',
         'vehicle_name' : 'Pumpy Dan',
         # 'vehicle_type' : 'Bus',
-        'route_id': 13,
+        'route_id': route_id,
         'latitude' : lat,
         'longitude' : lon,
         'speed': 25,
