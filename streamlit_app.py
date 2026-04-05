@@ -90,7 +90,7 @@ with live_section.container():
                 for i in range(1,len(eta)):
                     eta_info = eta[i]['eta_minutes']
                     if eta_info >= 1:
-                        st.write(f"{eta_info} minutes.")
+                        st.write(f"{round(eta_info,0)} minutes.")
                     elif eta_info < 1:
                         st.write("Now")
 
