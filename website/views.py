@@ -75,12 +75,19 @@ def update_location():
         last_updated = datetime.fromtimestamp(timestamp) if timestamp else datetime.now(timezone.utc)
 
         vehicle = Vehicle.query.filter_by(vehicle_id = vehicle_id).first() #Authenticate using API key and find vehicle in database
-        if vehicle and data.get('route_id') is not None:
-            vehicle.route_id = data.get('route_id')
-            vehicle.latitude = data.get('latitude')
-            vehicle.longitude = data.get('longitude')
-            vehicle.speed = data.get('speed')
-            vehicle.last_updated = last_updated
+        if vehicle:
+            if data.get('route_id') is not None and data.get('route_id') != vehicle.route_id:
+                vehicle.route_id = data.get('route_id')
+                vehicle.latitude = data.get('latitude')
+                vehicle.longitude = data.get('longitude')
+                vehicle.speed = data.get('speed')
+                vehicle.last_updated = last_updated
+            else:
+                vehicle.latitude = data.get('latitude')
+                vehicle.longitude = data.get('longitude')
+                vehicle.speed = data.get('speed')
+                vehicle.last_updated = last_updated
+
         else:
             vehicle = Vehicle(
                 vehicle_id = vehicle_id,
