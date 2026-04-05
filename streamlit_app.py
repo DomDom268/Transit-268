@@ -33,10 +33,10 @@ def get_stop_location(stop_id, route_id):
 @st.cache_data()
 def get_vehicle_location(route_id,vehicle_ids:list):
     locs = []
-    vehicles = requests.get(f"http://localhost:5000/vehicles?route_id={route_id}").json()
+    vehicles = requests.get(f"http://localhost:5000/vehicles/route?route_id={route_id}").json()
 
     for v in vehicles:
-        if v in vehicle_ids:
+        if v['vehicle_id'] in vehicle_ids:
             locs.append(v)
     
     return locs
@@ -107,8 +107,8 @@ with live_section.container():
 
             data = {
                 "name":[stop['stop_id']] + eta['vehicle_id'],
-                "lon":[stop_loc['lon']] + [loc['lon'] for loc in vehicle_locs],
-                "lat":[stop_loc['lat']] + [loc['lat'] for loc in vehicle_locs]
+                "lon":[stop_loc['lon']] + [loc['longitude'] for loc in vehicle_locs],
+                "lat":[stop_loc['lat']] + [loc['latitude'] for loc in vehicle_locs]
             }
 
             map_data = pd.DataFrame(data)
