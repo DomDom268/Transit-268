@@ -30,6 +30,18 @@ def get_stops(route_id):
 def get_stop_location(stop_id, route_id):
     return requests.get(f"http://localhost:5000/stop/location?stop_id={stop_id}&route_id={route_id}").json()
 
+@st.cache_data()
+def get_vehicle_location(route_id,vehicle_ids:list):
+    locs = []
+    vehicles = requests.get(f"http://localhost:5000/vehicles?route_id={route_id}").json()
+
+    for v in vehicles:
+        if v is vehicle_ids:
+            loc.append(v)
+    
+    return locs
+
+
 #USER INPUTS
 col1,col2 = st.columns(2)
 
@@ -86,10 +98,11 @@ with live_section.container():
     
             #Collect locations for stops and next buses
             stop_loc = get_stop_location(selected_stop_id, selected_route_id)
-            vehicle_locs = []
-            for id in eta['vehicle_id']:
-                loc = requests.get(f"http://localhost:5000/location/vehicle?vehicle_id={id}").json()
-                vehicle_locs.append(loc)
+            vehicle_locs = get_vehicle_location(selected_route_id, eta['vehicle_id'])
+            # vehicle_locs = []
+            # for id in eta['vehicle_id']:
+            #     loc = requests.get(f"http://localhost:5000/location/vehicle?vehicle_id={id}").json()
+            #     vehicle_locs.append(loc)
 
 
             data = {
