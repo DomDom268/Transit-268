@@ -20,13 +20,13 @@ direction = 1 #1 = Forward, -1=Reverse
 while True:
     
     lat,lon = route18[i]
-    
+    route_id = 18 if direction == 1 else 17
     payload = {
         'vehicle_id' : 5,
         'vehicle_plate' : 'TEST127',
         'vehicle_name' : 'Garfield',
         # 'vehicle_type' : 'Bus',
-        'route_id': 18,
+        'route_id': route_id,
         'latitude' : lat,
         'longitude' : lon,
         'speed': 25,
