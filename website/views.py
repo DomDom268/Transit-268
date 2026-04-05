@@ -372,10 +372,11 @@ def eta():
         vehicle_list.append(v.vehicle_id)
         eta_list.append(eta)
 
-    return jsonify({
-        'vehicle_id': vehicle_list,
-        'eta_minutes' : sorted(eta_list),
-    })
+        eta_data = zip(vehicle_list, eta_list)
+        eta_data_sorted = sorted(eta_data, key=lambda x: x[1])
+        eta_output = [{'vehicle_id': v_id, 'eta_minutes': round(eta, 2)} for v_id, eta in eta_data_sorted]
+
+    return jsonify(eta_output)
 
 @views.route('/health', methods = ['GET']) #Health check endpoint
 def health():

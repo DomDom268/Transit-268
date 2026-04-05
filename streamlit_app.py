@@ -78,27 +78,27 @@ with live_section.container():
         if eta_call.status_code == 200:
             eta = eta_call.json()
 
-            if not eta['eta_minutes']:
+            if not eta:
                 st.warning(f"Sorry, we couldn't calculate the ETA for route {selected_route_id} at {selected_stop_name} at this time.")
     
             else:
 
-                next_bus = eta['eta_minutes'][0]
+                next_bus = eta[0]['eta_minutes']
 
                 st.metric("Next Bus Arrival", value=f"{round(next_bus,0)} minutes" if next_bus >= 1 else "Now") #Display the ETA for the next bus arrival using a metric component. The label is set to "Next Bus Arrival" and the value is formatted to show the ETA in minutes if it is greater than or equal to 1 minute, or "Now" if the ETA is less than 1 minute.
         
-                for i in range(1,(len(eta['eta_minutes']))):
-                    eta_info = round(eta['eta_minutes'][i],0)
-                    vehicle_id = eta['vehicle_id'][i]
+                for i in range(1,len(eta)):
+                    eta_info = eta[i]['eta_minutes']
                     if eta_info >= 1:
                         st.write(f"{eta_info} minutes.")
                     elif eta_info < 1:
-                        st.write(f"Bus {vehicle_id} now.")
+                        st.write("Now")
 
     
             #Collect locations for stops and next buses
             stop_loc = get_stop_location(selected_stop_id, selected_route_id)
-            vehicle_locs = get_vehicle_location(selected_route_id, eta['vehicle_id'])
+            ids = [v['vehicle_id'] for v in eta]
+            vehicle_locs = get_vehicle_location(selected_route_id, ids)
             # vehicle_locs = []
             # for id in eta['vehicle_id']:
             #     loc = requests.get(f"http://localhost:5000/location/vehicle?vehicle_id={id}").json()
@@ -106,7 +106,7 @@ with live_section.container():
 
 
             data = {
-                "name":[stop['stop_id']] + eta['vehicle_id'],
+                "name":[stop['stop_id']] + ids,
                 "lon":[stop_loc['lon']] + [loc['longitude'] for loc in vehicle_locs],
                 "lat":[stop_loc['lat']] + [loc['latitude'] for loc in vehicle_locs]
             }
@@ -164,7 +164,7 @@ with live_section.container():
             st.pydeck_chart(deck)
             st.caption("Last updated at: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
-            st.write(map_data)
+            # st.write(map_data)
 
         else:
             logging.warning(f"Failed to fetch ETA data: {eta_call.status_code}")
