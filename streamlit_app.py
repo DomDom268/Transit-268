@@ -30,7 +30,7 @@ def get_stops(route_id):
 def get_stop_location(stop_id, route_id):
     return requests.get(f"http://localhost:5000/stop/location?stop_id={stop_id}&route_id={route_id}").json()
 
-@st.cache_data()
+
 def get_vehicle_location(route_id,vehicle_ids:list):
     locs = []
     vehicles = requests.get(f"http://localhost:5000/vehicles/route?route_id={route_id}").json()
