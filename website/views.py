@@ -76,6 +76,7 @@ def update_location():
 
         vehicle = Vehicle.query.filter_by(api_key=api_key).first() #Authenticate using API key and find vehicle in database
         if vehicle:
+            vehicle.route_id = data.get('route_id')
             vehicle.latitude = data.get('latitude')
             vehicle.longitude = data.get('longitude')
             vehicle.speed = data.get('speed')
