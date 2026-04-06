@@ -79,10 +79,10 @@ with live_section.container():
             eta = eta_call.json()
 
             if not eta:
-                st.warning(f"Sorry, we couldn't calculate the ETA for route {selected_route_id} at {selected_stop_name} at this time.")
+                st.warning(f"There are no upcoming buses for route {selected_route_id} at {selected_stop_name} at this time.")
     
             else:
-
+                # st.write(eta)
                 next_bus = eta[0]['eta_minutes']
 
                 st.metric("Next Bus Arrival", value=f"{round(next_bus,0)} minutes" if next_bus >= 1 else "Now") #Display the ETA for the next bus arrival using a metric component. The label is set to "Next Bus Arrival" and the value is formatted to show the ETA in minutes if it is greater than or equal to 1 minute, or "Now" if the ETA is less than 1 minute.

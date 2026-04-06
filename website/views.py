@@ -339,7 +339,7 @@ def eta():
     
     if not vehicles:
         logging.warning(f"No vehicles found for route_id {route_id} in request to /eta")
-        return jsonify({'message':'No buses found'})
+        return jsonify({'message':'No buses found at the moment'}), 200
     
     # distance = 0
     #Investigate all vehicles on route
@@ -372,9 +372,9 @@ def eta():
         vehicle_list.append(v.vehicle_id)
         eta_list.append(eta)
 
-        eta_data = zip(vehicle_list, eta_list)
-        eta_data_sorted = sorted(eta_data, key=lambda x: x[1])
-        eta_output = [{'vehicle_id': v_id, 'eta_minutes': round(eta, 2)} for v_id, eta in eta_data_sorted]
+    eta_data = zip(vehicle_list, eta_list)
+    eta_data_sorted = sorted(eta_data, key=lambda x: x[1])
+    eta_output = [{'vehicle_id': v_id, 'eta_minutes': round(eta, 2)} for v_id, eta in eta_data_sorted]
 
     return jsonify(eta_output)
 
