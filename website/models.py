@@ -19,7 +19,7 @@ class Vehicle(db.Model):
         return f"<Vehicle {self.vehicle_id} ({self.latitude},{self.longitude})>"
 
 class Stops(db.Model):
-    __tablename__ = 'stops'
+    __tablename__ = 'stopNames'
 
     stop_id = db.Column(db.Integer,primary_key = True)
     stop_name = db.Column(db.String(50), nullable = False)
@@ -46,7 +46,7 @@ class Routes_Stops(db.Model):
 
     id = db.Column(db.Integer,primary_key = True)
     route_id = db.Column(db.Integer,db.ForeignKey('routes.route_id'),nullable = False)
-    stop_id = db.Column(db.Integer, db.ForeignKey('stops.stop_id'),nullable = False)
+    stop_id = db.Column(db.Integer, db.ForeignKey('stopNames.stop_id'),nullable = False)
     stop_sequence = db.Column(db.Integer, nullable = False)
 
     stop = db.relationship('Stops')
