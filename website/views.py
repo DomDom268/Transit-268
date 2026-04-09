@@ -11,6 +11,10 @@ import logging
 views = Blueprint('views', __name__)
 limiter = Limiter(key_func=get_remote_address, app=app) # Apply rate limit to all routes in this blueprint
 
+@views.route('/', methods = ['GET'])
+def home():
+    return "Welcome to the Transit Tracker API! Please refer to the documentation for available endpoints."
+
 @views.route('/register',methods = ['POST']) #Driver registers bus
 @limiter.limit("5 per minute") # Limit to 5 requests per minute
 def add_vehicles():
