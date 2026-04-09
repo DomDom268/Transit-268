@@ -11,7 +11,7 @@ import logging
 views = Blueprint('views', __name__)
 limiter = Limiter(key_func=get_remote_address, app=app) # Apply rate limit to all routes in this blueprint
 
-@views.route('/', methods = ['GET'])
+@views.route('/')
 def home():
     return "Welcome to the Transit Tracker API! Please refer to the documentation for available endpoints."
 
