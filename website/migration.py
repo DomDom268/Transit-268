@@ -1,7 +1,9 @@
 from sqlalchemy import create_engine
+from dotenv import load_dotenv
 import pandas as pd
 import os
 
+load_dotenv()
 DATABASE_URL = os.getenv("DATABASE_PUBLIC_URL")
     
 if DATABASE_URL is None:
