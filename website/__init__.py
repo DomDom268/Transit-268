@@ -15,10 +15,10 @@ def create_app():
     os.makedirs(app.instance_path, exist_ok=True)
 
     #Only takes my local env variable if railway env not available
-    if os.getenv("RAILWWAY_ENVIRONMENT") is None:
+    if os.getenv("RAILWAY_ENVIRONMENT") is None:
         load_dotenv()
 
-    DATABASE_URL = os.getenv('DATABASE_URL')
+    DATABASE_URL = os.getenv('DATABASE_URL') or os.getenv('LOCAL_DATABASE_URL')
     if not DATABASE_URL:
         logging.error("DATABASE_URL environment variable not set.")
         raise ValueError("DATABASE_URL environment variable not set.")
