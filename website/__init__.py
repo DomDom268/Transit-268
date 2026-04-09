@@ -18,10 +18,10 @@ def create_app():
     if os.getenv("RAILWWAY_ENVIRONMENT") is None:
         load_dotenv()
 
-    DATABASE_URL = os.getenv('DATABASE_PUBLIC_URL')
+    DATABASE_URL = os.getenv('DATABASE_URL')
     if not DATABASE_URL:
-        logging.error("DATABASE_PUBLIC_URL environment variable not set.")
-        raise ValueError("DATABASE_PUBLIC_URL environment variable not set.")
+        logging.error("DATABASE_URL environment variable not set.")
+        raise ValueError("DATABASE_URL environment variable not set.")
 
     if DATABASE_URL.startswith("postgres://"):
         DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
