@@ -6,7 +6,7 @@ from os import path
 
 from dotenv import load_dotenv
 
-logging.basicConfig(filename='app.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 db = SQLAlchemy()
 
 def create_app():
