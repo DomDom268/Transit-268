@@ -169,7 +169,7 @@ def get_all():
     logging.info("Received request to /vehicles")
 
     vehicles = Vehicle.query.all()
-    if vehicles is None:
+    if not vehicles:
         logging.warning("No vehicles found in database for /vehicles")
         return jsonify({'error':'no vehicles'}), 404
     else:
