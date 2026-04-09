@@ -2,18 +2,20 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import os
 import logging
+from flask_cors import CORS
 from os import path
 
 from dotenv import load_dotenv
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
 db = SQLAlchemy()
 
 def create_app():
     # configure app
     app = Flask(__name__)
     os.makedirs(app.instance_path, exist_ok=True)
-
+    CORS(app)
     #Only takes my local env variable if railway env not available
     if os.getenv("RAILWAY_ENVIRONMENT") is None:
         load_dotenv()
