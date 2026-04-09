@@ -3,3 +3,5 @@ logging
 requests
 pandas
 pydeck
+streamlit-autorefresh
+datetime
