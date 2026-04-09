@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 import pandas as pd
 import os
 
-DATABASE_URL = "postgresql://postgres:rwaxSfvufmlYyFlrvzJYgojzUEEnhUXq@postgres.railway.internal:5432/railway"
+DATABASE_URL = "postgresql://postgres:rwaxSfvufmlYyFlrvzJYgojzUEEnhUXq@maglev.proxy.rlwy.net:20937/railway"
 
 if DATABASE_URL is None:
     raise ValueError("DATABASE_URL environment variable is not set.")
@@ -12,7 +12,7 @@ if DATABASE_URL.startswith("postgres://"):
 
 if "sslmode" not in DATABASE_URL:
     DATABASE_URL += "?sslmode=require"
-    
+
 engine = create_engine(DATABASE_URL)
 
 
