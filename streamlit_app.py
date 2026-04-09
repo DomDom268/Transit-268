@@ -7,7 +7,7 @@ import pydeck as pdk
 from datetime import datetime
 from streamlit_autorefresh import st_autorefresh
 
-
+BASE = 'https://transit-268-production.up.railway.app'
 st.set_page_config(page_title="Transit 268",layout="wide") #Center the page title and set the layout to wide for better use of screen space
 
 #AUTO REFRESH EVERY 30 SECONDS
@@ -20,20 +20,20 @@ st.caption("Real time bus arrivals")
 #CACHED FUNCTIONS
 @st.cache_data()
 def get_routes():
-    return requests.get('http://localhost:5000/routes').json() 
+    return requests.get(f'{BASE}/routes').json() 
 
 @st.cache_data()
 def get_stops(route_id):
-    return requests.get(f"http://localhost:5000/stops?route_id={route_id}").json()
+    return requests.get(f"{BASE}/stops?route_id={route_id}").json()
 
 @st.cache_data()
 def get_stop_location(stop_id, route_id):
-    return requests.get(f"http://localhost:5000/stop/location?stop_id={stop_id}&route_id={route_id}").json()
+    return requests.get(f"{BASE}/stop/location?stop_id={stop_id}&route_id={route_id}").json()
 
 
 def get_vehicle_location(route_id,vehicle_ids:list):
     locs = []
-    vehicles = requests.get(f"http://localhost:5000/vehicles/route?route_id={route_id}").json()
+    vehicles = requests.get(f"{BASE}/vehicles/route?route_id={route_id}").json()
 
     for v in vehicles:
         if v['vehicle_id'] in vehicle_ids:
@@ -74,7 +74,7 @@ with live_section.container():
 
         st.markdown(f"### Calculating Next Arrivals...⌚") #Display a message indicating that the application is calculating the next arrivals for the selected route and stop. This message is shown while the application makes a request to the backend API to calculate the ETA for the selected route and stop.
         
-        eta_call = requests.get(f"http://localhost:5000/eta?route_id={selected_route_id}&stop_id={stop['stop_id']}") #Make a GET request to the backend API to calculate the ETA for the selected route and stop. The request includes the selected route ID and stop ID as query parameters. The response from the API is expected to contain the ETA information, which will be displayed to the user. The status code of the response is checked to ensure that the request was successful before processing the ETA data.s
+        eta_call = requests.get(f"{BASE}/eta?route_id={selected_route_id}&stop_id={stop['stop_id']}") #Make a GET request to the backend API to calculate the ETA for the selected route and stop. The request includes the selected route ID and stop ID as query parameters. The response from the API is expected to contain the ETA information, which will be displayed to the user. The status code of the response is checked to ensure that the request was successful before processing the ETA data.s
         if eta_call.status_code == 200:
             eta = eta_call.json()
 
