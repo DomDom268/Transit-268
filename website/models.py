@@ -47,7 +47,7 @@ class Routes_Stops(db.Model):
 
     id = db.Column(db.Integer,primary_key = True)
     route_id = db.Column(db.Integer,db.ForeignKey('routes.route_id'),nullable = False)
-    stop_id = db.Column(db.Integer, db.ForeignKey('stopNames.stop_id'),nullable = False)
+    stop_id = db.Column(db.Integer, db.ForeignKey('stops.stop_id'),nullable = False)
     stop_sequence = db.Column(db.Integer, nullable = False)
 
     stop = db.relationship('Stops')
