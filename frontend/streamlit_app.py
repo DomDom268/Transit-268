@@ -8,6 +8,7 @@ from datetime import datetime
 from streamlit_autorefresh import st_autorefresh
 
 API = os.getenv('PUBLIC_API_URL')
+MAP_API =os.getenv('MAP_API')
 st.set_page_config(page_title="Transit 268",layout="wide") #Center the page title and set the layout to wide for better use of screen space
 
 #AUTO REFRESH EVERY 30 SECONDS
@@ -156,7 +157,9 @@ with live_section.container():
 
             deck = pdk.Deck(
                 layers=[iconLayer],
+                map_provider="mapbox",
                 map_style='mapbox://styles/mapbox/streets-v11',
+                mapbox_key=MAP_API,
                 initial_view_state=view_state,
             )
 
