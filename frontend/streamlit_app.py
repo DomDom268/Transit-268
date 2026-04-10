@@ -159,7 +159,7 @@ with live_section.container():
                 layers=[iconLayer],
                 map_provider="mapbox",
                 map_style='mapbox://styles/mapbox/streets-v11',
-                mapbox_key=MAP_API,
+                api_keys={'mapbox': MAP_API},
                 initial_view_state=view_state,
             )
 
