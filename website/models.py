@@ -19,8 +19,8 @@ class Vehicle(db.Model):
         return f"<Vehicle {self.vehicle_id} ({self.latitude},{self.longitude})>"
 
 class Stops(db.Model):
-    __tablename__ = 'stopNames'
-    __table_args__ = {'quote': True}
+    __tablename__ = 'stops'
+    
 
     stop_id = db.Column(db.Integer,primary_key = True)
     stop_name = db.Column(db.String(50), nullable = False)
