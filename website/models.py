@@ -20,6 +20,7 @@ class Vehicle(db.Model):
 
 class Stops(db.Model):
     __tablename__ = 'stopNames'
+    __table_args__ = {'quote': True}
 
     stop_id = db.Column(db.Integer,primary_key = True)
     stop_name = db.Column(db.String(50), nullable = False)
