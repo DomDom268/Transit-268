@@ -115,9 +115,13 @@ with live_section.container():
             map_data = pd.DataFrame(data)
 
             #ICON SETUP
-        
+            if selected_route_id == 17 or selected_route_id == 18:
+                bus_icon_url = "https://upload.wikimedia.org/wikipedia/commons/a/aa/Bus_icon_d_green.jpg"
+            else:
+                bus_icon_url = "https://upload.wikimedia.org/wikipedia/commons/1/11/Bus_icon_red.jpg"
+                
             bus_icon = {
-                "url": "https://upload.wikimedia.org/wikipedia/commons/a/aa/Bus_icon_d_green.jpg",
+                "url": bus_icon_url,
                 "width": 128,
                 "height": 128,
                 "anchorY": 128
