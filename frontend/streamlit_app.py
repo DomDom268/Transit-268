@@ -31,6 +31,16 @@ def get_stops(route_id):
 def get_stop_location(stop_id, route_id):
     return requests.get(f"https://{API}/stop/location?stop_id={stop_id}&route_id={route_id}").json()
 
+@st.cache_data()
+def stop_to_df(stops):
+    data = {
+        "stop_id":[s['stop_id'] for s in stops],
+        "stop_name":[s['stop_name'] for s in stops],
+        "lon":[s['lon'] for s in stops],
+        "lat":[s['lat'] for s in stops]
+    }
+
+    return pd.DataFrame(data)
 
 def get_vehicle_location(route_id,vehicle_ids:list):
     locs = []
@@ -137,11 +147,17 @@ with live_section.container():
             map_data['icon_data'] = None
             map_data['icon_data'] = [user_icon] + [bus_icon] * (len(map_data)-1)
 
-            # for i in map_data.index[1:]:
-            #     map_data.loc[i,'icon_data'] = bus_icon
+            df = stop_to_df(stops)
 
-
-            # Creating pydeck map
+            pathLayer = pdk.Layer(
+                type='PathLayer',
+                data=df,
+                pickable=True,
+                width_scale=20,
+                width_min_pixels=2,
+                get_path="path",
+                get_width=5,
+            )
 
             iconLayer = pdk.Layer(
                 type='IconLayer',
@@ -160,7 +176,7 @@ with live_section.container():
             )
 
             deck = pdk.Deck(
-                layers=[iconLayer],
+                layers=[iconLayer,pathLayer],
                 map_provider="mapbox",
                 map_style='mapbox://styles/mapbox/streets-v11',
                 api_keys={'mapbox': MAP_API},
