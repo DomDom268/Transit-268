@@ -36,8 +36,8 @@ def stop_to_df(stops):
     data = {
         "stop_id":[s['stop_id'] for s in stops],
         "stop_name":[s['stop_name'] for s in stops],
-        "lon":[s['lon'] for s in stops],
-        "lat":[s['lat'] for s in stops]
+        "lon":[s['longitude'] for s in stops],
+        "lat":[s['latitude'] for s in stops]
     }
 
     return pd.DataFrame(data)
