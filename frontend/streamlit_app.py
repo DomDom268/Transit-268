@@ -40,7 +40,13 @@ def stop_to_df(stops):
         "lat":[s['latitude'] for s in stops]
     }
 
-    return pd.DataFrame(data)
+    route_data = pd.DataFrame(data)
+    path = route_data[['longitude','latitude']].values.tolist()
+    path_data = [
+        {'path':path}
+    ]
+
+    return path_data
 
 def get_vehicle_location(route_id,vehicle_ids:list):
     locs = []
@@ -147,11 +153,11 @@ with live_section.container():
             map_data['icon_data'] = None
             map_data['icon_data'] = [user_icon] + [bus_icon] * (len(map_data)-1)
 
-            df = stop_to_df(stops)
+            route_data = stop_to_df(stops)
 
             pathLayer = pdk.Layer(
                 type='PathLayer',
-                data=df,
+                data=route_data,
                 pickable=True,
                 width_scale=20,
                 width_min_pixels=2,
