@@ -32,7 +32,9 @@ def get_stop_location(stop_id, route_id):
     return requests.get(f"https://{API}/stop/location?stop_id={stop_id}&route_id={route_id}").json()
 
 @st.cache_data()
-def stop_to_df(stops):
+def stop_to_df(route_id):
+    stops = get_stops(route_id)
+
     data = {
         "stop_id":[s['stop_id'] for s in stops],
         "stop_name":[s['stop_name'] for s in stops],
@@ -153,7 +155,7 @@ with live_section.container():
             map_data['icon_data'] = None
             map_data['icon_data'] = [user_icon] + [bus_icon] * (len(map_data)-1)
 
-            route_data = stop_to_df(stops)
+            route_data = stop_to_df(selected_route_id)
 
             pathLayer = pdk.Layer(
                 type='PathLayer',
