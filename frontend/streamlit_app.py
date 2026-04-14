@@ -46,9 +46,13 @@ def stop_to_df(route_id):
     route_data.columns = ['stop_id','stop_name','longitude','latitude']
     path = route_data[['longitude','latitude']].values.tolist()
     path_data = [
-        {'path':path,
-         'color':[80,200,120]}
+        {'path':path}
     ]
+
+    if route_id == 17 or route_id == 18:
+        path_data[0]['color'] = [80,200,120]
+    elif route_id == 13 or route_id == 14:
+        path_data[0]['color'] = [255,0,0]
 
     return path_data
 
