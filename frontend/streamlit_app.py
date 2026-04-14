@@ -50,9 +50,9 @@ def stop_to_df(route_id):
     ]
 
     if route_id == 17 or route_id == 18:
-        path_data[0]['color'] = [80,200,120]
+        path_data['color'] = [80,200,120]
     elif route_id == 13 or route_id == 14:
-        path_data[0]['color'] = [255,0,0]
+        path_data['color'] = [255,0,0]
 
     return path_data
 
