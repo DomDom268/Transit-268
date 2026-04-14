@@ -43,6 +43,7 @@ def stop_to_df(route_id):
     }
 
     route_data = pd.DataFrame(data)
+    route_data.columns = ['stop_id','stop_name','longitude','latitude']
     path = route_data[['longitude','latitude']].values.tolist()
     path_data = [
         {'path':path}
