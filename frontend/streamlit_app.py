@@ -46,7 +46,8 @@ def stop_to_df(route_id):
     route_data.columns = ['stop_id','stop_name','longitude','latitude']
     path = route_data[['longitude','latitude']].values.tolist()
     path_data = [
-        {'path':path}
+        {'path':path,
+         'color':[255,0,0]}
     ]
 
     return path_data
@@ -165,6 +166,7 @@ with live_section.container():
                 width_scale=20,
                 width_min_pixels=2,
                 get_path="path",
+                get_color="color",
                 get_width=5,
             )
 
