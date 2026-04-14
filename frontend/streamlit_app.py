@@ -47,7 +47,7 @@ def stop_to_df(route_id):
     path = route_data[['longitude','latitude']].values.tolist()
     path_data = [
         {'path':path,
-         'color':[255,0,0]}
+         'color':[0,255,0]}
     ]
 
     return path_data
