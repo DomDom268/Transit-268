@@ -185,7 +185,7 @@ with live_section.container():
             )
 
             deck = pdk.Deck(
-                layers=[iconLayer,pathLayer],
+                layers=[pathLayer,iconLayer],
                 map_provider="mapbox",
                 map_style='mapbox://styles/mapbox/streets-v11',
                 api_keys={'mapbox': MAP_API},
