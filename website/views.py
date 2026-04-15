@@ -112,6 +112,49 @@ def update_location():
         logging.error(f"Unexpected error occurred: {str(e)}")   
         return jsonify({'unexpected error': str(e)}), 500
 
+@views.route('/gps', methods = ['POST']) #API Endpoint to receive GPS data from Traccar client
+@limiter.limit("10 per minute") # Limit to 10 requests per minute
+def gps():
+    try:
+        vehicles = Vehicle.query.all()
+        if vehicles is None:
+            logging.warning("No vehicles found in database")
+            return jsonify({'error':'no vehicles'}), 404
+        
+        valid_apis = [v.api_key for v in vehicles]
+        api_key = request.args.get('api_key')
+        if not api_key or api_key not in valid_apis:
+            logging.warning("Invalid or missing API key in request to /gps")
+            return jsonify({'error':'Invalid or missing API key'}), 401
+
+        data = request.json
+        if not data:
+            logging.warning("No data received in request to /gps")
+            return jsonify({'error':'no data received'}), 400
+        
+        vehicle = Vehicle.query.filter_by(api_key=api_key).first()
+        if not vehicle:
+            logging.warning("Vehicle not registered in database")
+            return jsonify({'error':'vehicle not registered'}), 404
+        else:
+            vehicle.latitude = data.get('lat')
+            vehicle.longitude = data.get('lon')
+            vehicle.speed = data.get('speed')
+            vehicle.last_updated = data.get('timestamp')
+            safe_commit()
+            logging.info(f"GPS data for vehicle {vehicle.vehicle_id} updated successfully with API key {api_key}")
+            return jsonify({'status':'success'})
+    
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        logging.error(f"Database error occurred: {str(e)}")
+        return jsonify({'database error': str(e)}), 500
+    
+    except Exception as e:
+        db.session.rollback()
+        logging.error(f"Unexpected error occurred: {str(e)}")
+        return jsonify({'unexpected error': str(e)}), 500
+
 @views.route('/location/vehicle', methods = ['GET']) #API Endpoint to send latest location to frontend
 def get_vehicle_location():
     logging.info("Received request to /location/vehicle with args: " + str(request.args))
