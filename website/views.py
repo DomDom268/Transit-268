@@ -112,7 +112,7 @@ def update_location():
         logging.error(f"Unexpected error occurred: {str(e)}")   
         return jsonify({'unexpected error': str(e)}), 500
 
-@views.route('/gps', methods = ['POST']) #API Endpoint to receive GPS data from Traccar client
+@views.route('/gps', methods = ['GET','POST']) #API Endpoint to receive GPS data from Traccar client
 @limiter.limit("10 per minute") # Limit to 10 requests per minute
 def gps():
     try:
@@ -137,10 +137,10 @@ def gps():
             logging.warning("Vehicle not registered in database")
             return jsonify({'error':'vehicle not registered'}), 404
         else:
-            vehicle.latitude = data.get('lat')
-            vehicle.longitude = data.get('lon')
-            vehicle.speed = data.get('speed')
-            vehicle.last_updated = data.get('timestamp')
+            vehicle.latitude = request.args.get('lat')
+            vehicle.longitude = request.args.get('lon')
+            vehicle.speed = request.args.get('speed')
+            vehicle.last_updated = request.args.get('timestamp')
             safe_commit()
             logging.info(f"GPS data for vehicle {vehicle.vehicle_id} updated successfully with API key {api_key}")
             return jsonify({'status':'success'})
