@@ -121,8 +121,9 @@ def gps():
             logging.warning("Missing API key in request to /gps")
             return jsonify({'error':'Invalid or missing API key'}), 401
 
-        data = request.json if request.is_json else request.args
-        lat, lon = data.get('latitude'),data.get('longitude')
+        data = request.args
+        lat = data.get('latitude')
+        lon = data.get('longitude')
 
         if not lat or not lon:
             logging.warning("Missing coords")
